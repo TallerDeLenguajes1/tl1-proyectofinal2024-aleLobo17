@@ -18,7 +18,7 @@ namespace personaje{
         Hielo,
         Fuego,
         Tierra,
-        Nubes
+        Agua
     }
     
     public class Datos{

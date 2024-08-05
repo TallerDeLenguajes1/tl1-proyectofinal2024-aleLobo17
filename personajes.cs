@@ -1,4 +1,26 @@
 namespace personaje{
+    public enum NombrePersonajes{
+        Pikachu,
+        Mickey,
+        Jerry,
+        Cerebro,
+        Pinky,
+        NiñoRata,
+        SpeedyGonzales,
+        RataComun,
+        Chefsito,
+        TopoGigio
+    }
+
+    public enum Tipo{
+        Trueno,
+        Viento,
+        Hielo,
+        Fuego,
+        Tierra,
+        Nubes
+    }
+    
     public class Datos{
         private string tipo;
         private string name;
@@ -59,27 +81,5 @@ namespace personaje{
             Datos = new Datos(name, tipo, fechaNacimiento, edad, id);
             Caracteristicas = new Caracteristicas(velocidad, destreza, armadura, fuerza, nivel, salud);
         }
-    }
-
-    public enum NombrePersonajes{
-        Pikachu,
-        Mickey,
-        Jerry,
-        Cerebro,
-        Pinky,
-        NiñoRata,
-        SpeedyGonzales,
-        RataComun,
-        Chefsito,
-        TopoGigio
-    }
-
-    public enum Tipo{
-        Trueno,
-        Viento,
-        Hielo,
-        Fuego,
-        Tierra,
-        Nubes
     }
 }

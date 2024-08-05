@@ -10,8 +10,8 @@ namespace CrearApi
 {
     public class ApiClima
     {
-        private static readonly string apiKey = "6msprufjk45ihq3e3nvf1mfxj98kg88kplvzbd7v";
-        private static readonly List<string> placeIds = new List<string>
+        private static string apiKey = "y0cyg5atu3260ortirka20r0nq81odxligzevzv3";
+        private static List<string> placeIds = new List<string>
         {
             "london", "tokyo", "paris", "berlin", "sydney"
         };
@@ -19,25 +19,24 @@ namespace CrearApi
         private static string GetRandomPlaceId()
         {
             var random = new Random();
-            int index = random.Next(placeIds.Count);
-            return placeIds[index];
+            int i = random.Next(placeIds.Count);
+            return placeIds[i];
         }
+        //https://www.meteosource.com/api/v1/free/point?place_id=berlin&sections=all&timezone=UTC&language=en&units=metric&key=y0cyg5atu3260ortirka20r0nq81odxligzevzv3
 
         public static async Task<string> TraerInfoClima()
         {
             try
             {
                 using HttpClient client = new HttpClient();
-                string placeId = GetRandomPlaceId(); // Obtener un placeId aleatorio
+                string placeId = GetRandomPlaceId();
                 string url = $"https://www.meteosource.com/api/v1/free/point?place_id={placeId}&sections=all&timezone=UTC&language=en&units=metric&key={apiKey}";
                 HttpResponseMessage response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
 
-                // Deserializar el JSON usando Newtonsoft.Json
                 var data = JObject.Parse(responseBody);
-                return data["current"]["summary"].ToString(); // Obtener el resumen del clima actual
-                
+                return data["current"]["summary"].ToString();  
             }
             catch (Exception ex)
             {
@@ -132,5 +131,4 @@ namespace CrearApi
             }
         }
     }
-
 }

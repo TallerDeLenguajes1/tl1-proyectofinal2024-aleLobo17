@@ -4,103 +4,20 @@ using seleccionPersonaje;
 using CrearApi;
 using fabrica;
 using mostrar;
+using funcionesDeBatalla;
 using ArchivosJSON;
+using funcionesControl;
 
 namespace batalla
 {
     public class Combate
     {
-        //  ******************************* FUNCIONES GENERALES PARA EL COMBATE ****************************      
-        private static Personaje SeleccionarPJ(List<Personaje> personajes, Seleccion seleccion, Personaje pjExistente = null)
-        {
-            if (pjExistente == null)
-            {
-                Console.WriteLine("\nSeleccione el id del personaje que desea usar:");
-            }
-            else
-            {
-                Console.WriteLine("\nSeleccione el id de su oponente:");
-            }
-
-            int.TryParse(Console.ReadLine(), out int op);
-
-            if (op >= 1 && op <= 10)
-            {
-                var pjSeleccionado = seleccion.seleccionarPersonaje(personajes, op);
-                if (pjSeleccionado == pjExistente)
-                {
-                    Console.WriteLine("\nNo puede seleccionar el mismo personaje.");
-                    return SeleccionarPJ(personajes, seleccion, pjExistente);
-                }
-                seleccion.personajeSeleccionado(pjSeleccionado);
-                return pjSeleccionado;
-            }
-            else
-            {
-                Console.WriteLine("\nNo seleccionó un ID correcto.");
-                return SeleccionarPJ(personajes, seleccion, pjExistente);
-            }
-        }
-
-        public async Task realizarAtaqueYDefensa(Personaje atacante, Personaje defensor)
-        {
-            var random = new Random();
-            var datosPj = atacante.Datos;
-            var caracteristicas = atacante.Caracteristicas;
-            var datosPj2 = defensor.Datos;
-            var caracteristicas2 = defensor.Caracteristicas;
-
-            int ataque = caracteristicas.Destreza * caracteristicas.Fuerza * caracteristicas.Nivel;
-            int efectividad = random.Next(1, 100);
-            int defensa = caracteristicas2.Armadura * caracteristicas2.Velocidad;
-            const int Ajuste = 500;
-
-            int danioProvocado = ((ataque * efectividad) - defensa) / Ajuste+10;
-/*
-            if (danioProvocado>20){
-                danioProvocado = random.Next(13, 19);
-            }*/
-            Console.WriteLine($"\nEl atacante {datosPj.Name} realizó un daño de: {danioProvocado}");
-            controlDanio(danioProvocado);
-
-            caracteristicas2.Salud -= danioProvocado;
-
-            controlarSaludNoNegativa(caracteristicas2);
-
-            Console.WriteLine($"La salud de {datosPj2.Name} es de: {caracteristicas2.Salud}");
-            await Task.Delay(1700);
-        }
-
-        private async Task<Personaje> realizarCombate(Personaje p1, Personaje p2)
-        {
-            var asci = new Mostrar();
-            while (p1.Caracteristicas.Salud > 0 && p2.Caracteristicas.Salud > 0)
-            {
-                await realizarAtaqueYDefensa(p1, p2);
-                if (p2.Caracteristicas.Salud <= 0)
-                {
-                    return await ControlarSaludPJ(p1, p2, asci);
-                }
-
-                await realizarAtaqueYDefensa(p2, p1);
-
-                if (p1.Caracteristicas.Salud <= 0)
-                {
-                    return await ControlarSaludPJ(p1, p2, asci);
-                }
-            }
-            return null;
-        }
-
         public void guardarGanador(List<Personaje> listGanadores, GuardarYleerArchivosJson historial, string archivoHistorial, Personaje pjGanador)
         {
             listGanadores.Add(pjGanador);
-            //historial.GuardarGanador(listGanadores, archivoHistorial);
             historial.GuardarJson(listGanadores, archivoHistorial);
         }
-        
-
-        //************************************** CONTROLES *****************************************
+      
         private async Task verificarBonificacionClima(Personaje pjSeleccionado, Personaje pjSeleccionado2)
         {
             string weather = await ApiClima.TraerInfoClima();
@@ -109,69 +26,6 @@ namespace batalla
             ApiClima.controlarClimaConPersonaje(pjSeleccionado2, weather);
         }
 
-        private static void controlDanio(int danioProvocado)
-        {
-            if (danioProvocado > 15)
-            {
-
-                Console.WriteLine("GOLPE CRITICO!");
-            }
-        }
-
-        private static void controlarSaludNoNegativa(Caracteristicas caracteristicas2)
-        {
-            if (caracteristicas2.Salud < 0)
-            {
-                caracteristicas2.Salud = 0;
-            }
-        }
-
-        private static async Task<Personaje> ControlarSaludPJ(Personaje p1, Personaje p2, Mostrar asci)
-        {
-            if (p1.Caracteristicas.Salud <= 0){
-                Console.WriteLine("El ganador fue " + p2.Datos.Name);
-                p1.Caracteristicas.Salud = 100;
-                p2.Caracteristicas.Salud = 100;
-                asci.Finish();
-                await Task.Delay(900);
-                asci.Perdedor();
-                await Task.Delay(700);
-                return p2;
-            }else{
-                Console.WriteLine("El ganador fue " + p1.Datos.Name);
-                p1.Caracteristicas.Salud = 100;
-                p2.Caracteristicas.Salud = 100;
-                asci.Finish();
-                await Task.Delay(900);
-                await verResultado(p1);
-                return p1;
-            } 
-        }
-
-        private static async Task verResultado(Personaje pjSeleccionado)
-        {
-            var asci = new Mostrar();
-            await Task.Delay(1700);
-
-            var random2 = new Random();
-            int i = random2.Next(0, 2);
-            if (i == 0)
-            {
-                Console.WriteLine("No recibiste una bonificación.");
-                asci.mostrarPJ(pjSeleccionado);
-                Console.WriteLine("---------COMBATE FINALIZADO--------");
-            }
-            else
-            {
-                Console.WriteLine($"Recibiste una bonificación +2 de fuerza y +2 de armadura.");
-                pjSeleccionado.Caracteristicas.Fuerza += 2;
-                pjSeleccionado.Caracteristicas.Armadura += 2;
-                asci.mostrarPJ(pjSeleccionado);
-                Console.WriteLine("---------COMBATE FINALIZADO--------");
-            }
-        }
-
-        //************************************* SECCION DE BATALLAS *****************************************
         public async Task Pelea1vs1(List<Personaje> personajes, Combate combate, List<Personaje> listGanadores, GuardarYleerArchivosJson historial, string archivoHistorial, List<Personaje> pjFabricados, FabricaDePersonajes fabrica)
         {
             var pjGanador = await combate.peleaBot(personajes,pjFabricados,fabrica);
@@ -180,24 +34,28 @@ namespace batalla
 
         public async Task<Personaje> peleaBot(List<Personaje> personajes, List<Personaje> pjFabricados, FabricaDePersonajes fabrica)
         {
+            var selec = new paraBatalla();
             fabrica.ListaDePersonaje(pjFabricados);
             var seleccion = new Seleccion();
-            Personaje pjSeleccionado = SeleccionarPJ(personajes, seleccion);
-            Personaje pjSeleccionado2 = SeleccionarPJ(personajes, seleccion, pjSeleccionado);
+            Personaje pjSeleccionado = selec.SeleccionarPJ(personajes, seleccion);
+            Personaje pjSeleccionado2 = selec.SeleccionarPJ(personajes, seleccion, pjSeleccionado);
             await Task.Delay(1700);
             Console.WriteLine($"{pjSeleccionado.Datos.Name} VS {pjSeleccionado2.Datos.Name}");
+            var clima = new Control();
             await verificarBonificacionClima(pjSeleccionado, pjSeleccionado2);
+            var realcombate = new paraBatalla();
 
-            return await realizarCombate(pjSeleccionado, pjSeleccionado2);
+            return await realcombate.realizarCombate(pjSeleccionado, pjSeleccionado2);
         }
 
     
-        public async Task<Personaje> TorneoDeBasurero(List<Personaje> pjPrincipal,List<Personaje> pjFabricados, FabricaDePersonajes fabrica, List<Personaje> PjSecundario, Combate combate, List<Personaje> listGanadores, GuardarYleerArchivosJson historial, string archivoHistorial)
+        public async Task<Personaje> TorneoDeBasurero(List<Personaje> pjPrincipal,List<Personaje> pjFabricados, FabricaDePersonajes fabrica, List<Personaje> PjSecundario, Combate combate, List<Personaje> listGanadores, /*HistorialJson historial*/GuardarYleerArchivosJson historial, string archivoHistorial)
         {
+            var selec = new paraBatalla();
             fabrica.ListaDePersonaje(pjFabricados);
             var random = new Random();
             var seleccion = new Seleccion();
-            Personaje pjSeleccionado = SeleccionarPJ(pjPrincipal, seleccion);
+            Personaje pjSeleccionado = selec.SeleccionarPJ(pjPrincipal, seleccion);
             int nivel = 3;
             int contador = 0;
             int elemento = 0;
@@ -216,9 +74,10 @@ namespace batalla
                     break;
                 }
                 Console.WriteLine($"\nNivel {contador + 1}: {pjSeleccionado.Datos.Name} vs {pjOponentes[i].Datos.Name}");
+                var controlS = new Control();
                 await verificarBonificacionClima(pjSeleccionado, pjOponentes[i]);
-
-                var pjGanador = await realizarCombate(pjSeleccionado, pjOponentes[i]);
+                var realcombate = new paraBatalla();
+                var pjGanador = await realcombate.realizarCombate(pjSeleccionado, pjOponentes[i]);
 
                 if (pjGanador == pjSeleccionado)
                 {
@@ -264,7 +123,7 @@ namespace batalla
         private async Task MostrarTransicionDeNivel(Personaje pj, int nivelActual)
         {
             Console.WriteLine("************************************************************");
-            Console.WriteLine($"                    {pj.Datos.Name}                        ");
+            Console.WriteLine($"                     {pj.Datos.Name}                        ");
             Console.WriteLine($"                     Nivel {nivelActual}                     ");
             Console.WriteLine("************************************************************");
             Console.WriteLine("\nSubiendo al siguiente nivel...");

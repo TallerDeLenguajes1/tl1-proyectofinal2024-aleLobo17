@@ -121,12 +121,12 @@ namespace CrearApi
                     break;
                 case 1:
                     Console.WriteLine($"{character.Datos.Name} tiene +5 de fuerza y +5 de armadura aumentadas debido al clima.");
-                    character.Caracteristicas.Fuerza += 5;
+                    character.Caracteristicas.Fuerza += 4;
                     character.Caracteristicas.Armadura += 5;
                     break;
                 case 2:
                     Console.WriteLine($"{character.Datos.Name} tiene -3 de fuerza y -3 de armadura mermadas debido al clima.");
-                    character.Caracteristicas.Fuerza -= 3;
+                    character.Caracteristicas.Fuerza -= 2;
                     character.Caracteristicas.Armadura -= 3;
                     break;
             }

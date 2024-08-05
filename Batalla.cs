@@ -10,7 +10,7 @@ namespace batalla
 {
     public class Combate
     {
-        //  FUNCIONES GENERALES PARA EL COMBATE      
+        //  ******************************* FUNCIONES GENERALES PARA EL COMBATE ****************************      
         private static Personaje SeleccionarPJ(List<Personaje> personajes, Seleccion seleccion, Personaje pjExistente = null)
         {
             if (pjExistente == null)
@@ -56,10 +56,10 @@ namespace batalla
             const int Ajuste = 500;
 
             int danioProvocado = ((ataque * efectividad) - defensa) / Ajuste+10;
-
+/*
             if (danioProvocado>20){
-                danioProvocado = random.Next(12, 17);
-            }
+                danioProvocado = random.Next(13, 19);
+            }*/
             Console.WriteLine($"\nEl atacante {datosPj.Name} realizó un daño de: {danioProvocado}");
             controlDanio(danioProvocado);
 
@@ -100,7 +100,7 @@ namespace batalla
         }
         
 
-        //CONTROLES
+        //************************************** CONTROLES *****************************************
         private async Task verificarBonificacionClima(Personaje pjSeleccionado, Personaje pjSeleccionado2)
         {
             string weather = await ApiClima.TraerInfoClima();
@@ -133,13 +133,16 @@ namespace batalla
                 p1.Caracteristicas.Salud = 100;
                 p2.Caracteristicas.Salud = 100;
                 asci.Finish();
+                await Task.Delay(900);
                 asci.Perdedor();
+                await Task.Delay(700);
                 return p2;
             }else{
                 Console.WriteLine("El ganador fue " + p1.Datos.Name);
                 p1.Caracteristicas.Salud = 100;
                 p2.Caracteristicas.Salud = 100;
                 asci.Finish();
+                await Task.Delay(900);
                 await verResultado(p1);
                 return p1;
             } 
@@ -168,7 +171,7 @@ namespace batalla
             }
         }
 
-        // SECCION DE BATALLAS
+        //************************************* SECCION DE BATALLAS *****************************************
         public async Task Pelea1vs1(List<Personaje> personajes, Combate combate, List<Personaje> listGanadores, GuardarYleerArchivosJson historial, string archivoHistorial, List<Personaje> pjFabricados, FabricaDePersonajes fabrica)
         {
             var pjGanador = await combate.peleaBot(personajes,pjFabricados,fabrica);

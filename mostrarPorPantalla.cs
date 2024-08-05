@@ -1,10 +1,13 @@
 using System;
 using personaje;
-namespace mostrar{
-    public class Mostrar{
-        public void MostrarLogo(){
-            console.WriteLine(@"
-            
+namespace mostrar
+{
+   public class Mostrar
+   {
+      public void MostrarLogo()
+      {
+         Console.WriteLine(@" 
+
 ██████╗ ███████╗██╗     ███████╗ █████╗     ██████╗ ███████╗    ██████╗  █████╗ ████████╗ █████╗ ███████╗
 ██╔══██╗██╔════╝██║     ██╔════╝██╔══██╗    ██╔══██╗██╔════╝    ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██╔════╝
 ██████╔╝█████╗  ██║     █████╗  ███████║    ██║  ██║█████╗      ██████╔╝███████║   ██║   ███████║███████╗
@@ -47,16 +50,20 @@ namespace mostrar{
                        .#%#%#%%(       ,(%%%##(/*/%**/(##%%%/.      ,##%%%%%(                       
                            .#%%%%%%%%(,          ,%          .*#%#%%%%%%(                           
                                 .(%#%%%%%%%%%%%%%%%%%%%%%%%%%%%%#%%*                                
-                                        .*(##%%%%%%%%%%%##(,  
-            ");
-            Console.WriteLine("");
-        }
+                                        .*(##%%%%%%%%%%%##(,                                                                                                           
+     ");
 
-        public void CondicionInicial(){
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine(@"");
+
+    Console.WriteLine("");
+ 
+   }
+
+public void CondicionInicial()
+        {   
+           Console.ForegroundColor = ConsoleColor.White;
+           Console.WriteLine("");
+           Console.WriteLine("");
+           Console.WriteLine(@"");
             Console.WriteLine("╔════════════════════════════════════════════════════════════╗");
             Console.WriteLine("║                                                            ║");
             Console.WriteLine("║      ¡Bienvenido al mundo de las peleas de Ratas!          ║");
@@ -78,9 +85,10 @@ namespace mostrar{
             Console.WriteLine("║  Elije sabiamente y que comience el espectaculo!!          ║");
             Console.WriteLine("║                                                            ║");
             Console.WriteLine("╚════════════════════════════════════════════════════════════╝");
-        }
     }
-    public void Finish()
+
+
+public void Finish()
 {
     Console.WriteLine(@"
 ███████╗██╗███╗   ██╗    ██████╗ ███████╗██╗          ██████╗ ██████╗ ███╗   ███╗██████╗  █████╗ ████████╗███████╗██╗██╗
@@ -676,5 +684,4 @@ case "TopoGigio":
             }
         }
     }
-}
 }

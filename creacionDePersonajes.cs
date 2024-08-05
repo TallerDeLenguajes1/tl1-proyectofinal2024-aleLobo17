@@ -56,7 +56,7 @@ namespace fabrica
             {
                 var datosPj = personaje.Datos;
                 var caracteristicasPJ = personaje.Caracteristicas;
-                
+
                 Console.WriteLine("ID: " + datosPj.Id);
                 Console.WriteLine("Nombre: " + datosPj.Name);
                 Console.WriteLine("Tipo: " + datosPj.Tipo);
@@ -68,23 +68,16 @@ namespace fabrica
                 Console.WriteLine("Nivel: " + caracteristicasPJ.Nivel);
                 Console.WriteLine("Armadura: " + caracteristicasPJ.Armadura);
                 Console.WriteLine("Salud: " + caracteristicasPJ.Salud);
-                Console.WriteLine("");
-                Console.WriteLine("------------------------------------");
+                Console.WriteLine();
             }
         }
         
         public void ListaDePersonaje(List<Personaje> personajes)
         {
-            foreach (var personaje in personajes)
+            for (int i = 0; i < personajes.Count; i++)
             {
-                var datosPj = personaje.Datos;
-                var caracteristicasPJ = personaje.Caracteristicas;
-
-                Console.WriteLine("ID: " + datosPj.Id);
-                Console.WriteLine("Nombre: " + datosPj.Name);
-                Console.WriteLine("Tipo: " + datosPj.Tipo);
+                Console.WriteLine("ID: " + personajes[i].Datos.Id + "   Nombre: " + personajes[i].Datos.Name);
                 Console.WriteLine();
-                Console.WriteLine("------------------------------------");
             }
         }
 

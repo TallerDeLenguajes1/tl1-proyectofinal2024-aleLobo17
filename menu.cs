@@ -9,7 +9,7 @@ namespace MenuInteractivo
 {
     public static class Menu
     {
-        public static async Task ControlarMenu(FabricaDePersonajes fabrica, HistorialJson historial, Combate combate, string archivoHistorial, List<Personaje> pjFabricados, List<Personaje> listGanadores)
+        public static async Task ControlarMenu(FabricaDePersonajes fabrica, /*HistorialJson historial,*/ GuardarYleerArchivosJson historial, Combate combate, string archivoHistorial, List<Personaje> pjFabricados, List<Personaje> listGanadores)
         {
             int opcion;
         do
@@ -44,10 +44,11 @@ namespace MenuInteractivo
                     await combate.Pelea1vs1(pjFabricados,combate,listGanadores,historial,archivoHistorial,pjFabricados,fabrica);
                     break;
                 case 3:
-                    await combate.TorneoDeBasurero(pjFabricados, pjFabricados, combate,listGanadores,historial,archivoHistorial);
+                    await combate.TorneoDeBasurero(pjFabricados,pjFabricados, fabrica, pjFabricados, combate, listGanadores, historial, archivoHistorial);
                     break;
                 case 4:
-                    var leerPJ = historial.LeerGanador(archivoHistorial);
+                    //var leerPJ = historial.LeerGanador(archivoHistorial);
+                    var leerPJ = historial.LeerJson(archivoHistorial);
                     Console.WriteLine("\n--Historial ganadores--\n");
                     fabrica.MostrarPersonaje(leerPJ);
                     break;
@@ -84,15 +85,15 @@ namespace MenuInteractivo
                 default:
                     Console.WriteLine("Opción no válida. Por favor, introduce un número del 1 al 5.");
                     break;
-                }
+            }
 
-                if (opcion != 5)
-                {
-                    Console.WriteLine("Presiona una tecla para continuar...");
-                    Console.ReadKey();
-                }
+            if (opcion != 5)
+            {
+                Console.WriteLine("Presiona una tecla para continuar...");
+                Console.ReadKey();
+            }
 
-            } while (opcion != 5);
+        } while (opcion != 5);
         }
     }
 }

@@ -12,7 +12,8 @@ public class Program
     {
         var fabrica = new FabricaDePersonajes();
         var gestionPersonajes = new GestionPersonajes();
-        var historial = new HistorialJson();
+        //var historial = new HistorialJson();
+        var historial = new GuardarYleerArchivosJson();
         var combate = new Combate();
         var archivoPersonajes = @"personajes.json";
         var archivoHistorial = @"historial.json";

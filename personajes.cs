@@ -8,7 +8,7 @@ namespace personaje{
         NiñoRata,
         SpeedyGonzales,
         RataComun,
-        Chefsito,
+        Chefcito,
         TopoGigio
     }
 

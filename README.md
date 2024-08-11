@@ -8,6 +8,8 @@ ratones traidos de diferentes mundos se enfrentaran en un combate para ver
 quien es el Rey de la colina, en este caso, mas bien seria el Rey del Basurero.
 Entra, elige a tu campeon y ve si tiene lo necesario para ser el mejor.
 
+Api de Clima: segun sea el tipo de personaje se le agregara aumento de daño y defensa o
+reduccion del mismo segun la compatibilidad con el clima actual.
 
 Creacion de Personajes:
 
